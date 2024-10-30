@@ -425,6 +425,13 @@ Steps
 2. Create a new geometry object called `geo`, which is the dense areas with a 500m buffer
 3. `geo.plot()` 
 
+```{python}
+austin = data.plot(color="grey")
+dissolved_dense = dissolved.loc[dissolved["dense"] == 1]
+geo = dissolved_dense.buffer(500)
+geo.plot(ax = austin, alpha=0.5)
+```
+
 After you are done, here are some cosmetic suggestions:
 
 * Start with a grey plot of all of the Austin boundaries: `austin = data.plot(color="grey")`
