@@ -403,6 +403,40 @@ nlp.add_pipe('spacytextblob')
 
 Hint: if you are running the code interactively, you'll need to first run `alt.renderers.enable("jupyter")`
 
+```{python}
+from spacytextblob.spacytextblob import SpacyTextBlob
+import spacy
+import pandas as pd
+import altair as alt
+alt.renderers.enable("png", ppi=300)
+nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load('en_core_web_sm')
+nlp.add_pipe('spacytextblob')
+
+with open(r"C:\Users\LUIS\Documents\GitHub\student30538\before_lecture\nlp_13\files\trump_2020.txt", 'r', encoding="utf-8") as file:
+    trump_2020_text = file.read()
+
+doc_trump_2020 = nlp(trump_2020_text)
+
+trump_2020_sentence_polarities = []
+for i, sentence in enumerate(doc_trump_2020.sents):
+    polarity = sentence._.blob.polarity
+    trump_2020_sentence_polarities.append(
+        {"n": i + 1, "trump_polarity": polarity})
+
+df_trump_2020 = pd.DataFrame(trump_2020_sentence_polarities)
+
+chart = alt.Chart(df_trump_2020).mark_line().encode(
+    alt.X("n", title="Sentence Number"),
+    alt.Y("trump_polarity", title="Polarity")
+).properties(
+    title="Trump",
+    width=500,
+    height=200
+)
+
+chart
+```
 
 ## Sentiment Analysis: Summary 
 - One model for sentiment analysis: `spacytextblob` 
